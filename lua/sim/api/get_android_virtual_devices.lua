@@ -1,50 +1,42 @@
+local cvim = require("coop.vim")
 local string_lib = require("sim.utils").string
 local executables = require("sim.api.executables")
 local AndroidVirtualDevice = require("sim.api.models").AndroidVirtualDevice
 
----@param callback (fun(devices: AndroidVirtualDevice[]): nil)
-local function get_android_virtual_devices(callback)
-  print("calling android")
+---@async
+---@return AndroidVirtualDevice[]
+local function get_android_virtual_devices()
+	---@type AndroidVirtualDevice[]
+	local devices = {}
 
-  ---@type AndroidVirtualDevice[]
-  local devices = {}
+	if executables.emulator == nil then
+		return devices
+	end
 
-  if executables.emulator == nil then
-    callback(devices)
-    return
-  end
-  print("still on it")
+	local out = cvim.system({ executables.emulator, "-list-avds" })
 
-  return vim.system({ executables.emulator, "-list-avds" }, {}, function(out)
-    vim.schedule(function()
-      print("done")
-      print("code: " .. out.code)
-      if out.code ~= 0 then
-        callback(devices)
-        return
-      end
+	if out.code ~= 0 then
+		return devices
+	end
 
-      local output = out.stdout
+	local output = out.stdout
 
-      if output == nil or #output == 0 then
-        callback(devices)
-        return
-      end
+	if output == nil or #output == 0 then
+		return devices
+	end
 
-      for line in string_lib.lines(output) do
-        if #line == 0 then
-          goto continue
-        end
+	for line in string_lib.lines(output) do
+		if #line == 0 then
+			goto continue
+		end
 
-        local device = AndroidVirtualDevice.new(line, false)
+		local device = AndroidVirtualDevice.new(line, false)
 
-        table.insert(devices, device)
-        ::continue::
-      end
+		table.insert(devices, device)
+		::continue::
+	end
 
-      callback(devices)
-    end)
-  end)
+	return devices
 end
 
 return get_android_virtual_devices
