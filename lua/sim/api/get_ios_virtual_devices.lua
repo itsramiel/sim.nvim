@@ -33,7 +33,6 @@ local function get_ios_virtual_devices()
     for _, device in ipairs(devices_array) do
       local is_device_available = device.isAvailable
       if not is_device_available then
-        print("device is not available")
         goto continue
       end
 

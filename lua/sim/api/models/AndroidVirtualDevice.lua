@@ -1,19 +1,19 @@
 ---@class AndroidVirtualDevice
 ---@field name string
----@field booted boolean
+---@field adb_name string?
 
 local M = {}
 
 local mt = {}
 
 ---@param name string
----@param booted boolean
+---@param adb_name string?
 ---@return AndroidVirtualDevice
-M.new = function(name, booted)
+M.new = function(name, adb_name)
   ---@type AndroidVirtualDevice
   local device = {
     name = name,
-    booted = booted,
+    adb_name = adb_name,
   }
 
   setmetatable(device, mt)

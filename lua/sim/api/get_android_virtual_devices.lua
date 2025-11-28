@@ -2,41 +2,47 @@ local cvim = require("coop.vim")
 local string_lib = require("sim.utils").string
 local executables = require("sim.api.executables")
 local AndroidVirtualDevice = require("sim.api.models").AndroidVirtualDevice
+local get_booted_android_emulator_names = require("sim.api.get_booted_android_emulator_names")
 
 ---@async
 ---@return AndroidVirtualDevice[]
 local function get_android_virtual_devices()
-	---@type AndroidVirtualDevice[]
-	local devices = {}
+  local booted_emulators = get_booted_android_emulator_names()
 
-	if executables.emulator == nil then
-		return devices
-	end
+  ---@type AndroidVirtualDevice[]
+  local devices = {}
 
-	local out = cvim.system({ executables.emulator, "-list-avds" })
+  if executables.emulator == nil then
+    return devices
+  end
 
-	if out.code ~= 0 then
-		return devices
-	end
+  local out = cvim.system({ executables.emulator, "-list-avds" })
 
-	local output = out.stdout
+  if out.code ~= 0 then
+    return devices
+  end
 
-	if output == nil or #output == 0 then
-		return devices
-	end
+  local output = out.stdout
 
-	for line in string_lib.lines(output) do
-		if #line == 0 then
-			goto continue
-		end
+  if output == nil or #output == 0 then
+    return devices
+  end
 
-		local device = AndroidVirtualDevice.new(line, false)
+  for line in string_lib.lines(output) do
+    if #line == 0 then
+      goto continue
+    end
 
-		table.insert(devices, device)
-		::continue::
-	end
+    local emulator_name = line
+    local adb_name = booted_emulators[emulator_name]
 
-	return devices
+    local device = AndroidVirtualDevice.new(emulator_name, adb_name)
+
+    table.insert(devices, device)
+    ::continue::
+  end
+
+  return devices
 end
 
 return get_android_virtual_devices
