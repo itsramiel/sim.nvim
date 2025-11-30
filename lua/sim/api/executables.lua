@@ -2,7 +2,6 @@
 ---@field xcrun string?
 ---@field emulator string?
 ---@field adb string?
----@field setup function(): nil
 local M = {}
 
 local function get_xcrun_path()
