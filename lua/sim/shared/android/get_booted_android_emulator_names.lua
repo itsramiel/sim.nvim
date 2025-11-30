@@ -1,8 +1,8 @@
 local cvim = require("coop.vim")
 
-local string_lib = require("sim.utils").string
-local executables = require("sim.api.executables")
-local get_android_virtual_device_adb_ids = require("sim.api.get_android_virtual_device_adb_ids")
+local string_lib = require("sim.shared.string")
+local executables = require("sim.shared.executables")
+local get_android_virtual_device_adb_ids = require("sim.shared.android.get_android_virtual_device_adb_ids")
 
 ---@alias get_booted_android_emulator_names_result table<string, string>
 

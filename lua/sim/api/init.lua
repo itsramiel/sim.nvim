@@ -1,10 +1,7 @@
 local M = {}
 
-M.setup = function()
-	local executables = require("sim.api.executables")
-	executables.setup()
-end
-M.get_ios_virtual_devices = require("sim.api.get_ios_virtual_devices")
-M.get_android_virtual_devices = require("sim.api.get_android_virtual_devices")
+M.models = require("sim.api.models")
+M.boot = require("sim.api.boot")
+M.shutdown = require("sim.api.shutdown")
 
 return M

@@ -1,5 +1,5 @@
-local string_lib = require("sim.utils").string
-local executables = require("sim.api.executables")
+local string_lib = require("sim.shared.string")
+local executables = require("sim.shared.executables")
 
 local cvim = require("coop.vim")
 

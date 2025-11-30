@@ -1,5 +1,5 @@
 local cvim = require("coop.vim")
-local executables = require("sim.api.executables")
+local executables = require("sim.shared.executables")
 
 ---@async
 ---@param udid_or_name string

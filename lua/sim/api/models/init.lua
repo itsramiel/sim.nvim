@@ -1,6 +1,6 @@
 local M = {}
 
-M.IOSVirtualDevice = require("sim.api.models.IOSVirtualDevice")
-M.AndroidVirtualDevice = require("sim.api.models.AndroidVirtualDevice")
+M.ios_virtual_device = require("sim.api.models.ios_virtual_device")
+M.android_virtual_device = require("sim.api.models.android_virtual_device")
 
 return M

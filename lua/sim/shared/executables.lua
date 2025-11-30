@@ -1,9 +1,3 @@
----@class Executables
----@field xcrun string?
----@field emulator string?
----@field adb string?
-local M = {}
-
 local function get_xcrun_path()
 	local paths = {
 		-- "xcrun",
@@ -61,10 +55,14 @@ local function get_adb_path()
 	end
 end
 
-M.setup = function()
-	M.xcrun = get_xcrun_path()
-	M.emulator = get_emulator_path()
-	M.adb = get_adb_path()
-end
+---@class Executables
+---@field xcrun string?
+---@field emulator string?
+---@field adb string?
+local M = {
+	xcrun = get_xcrun_path(),
+	emulator = get_emulator_path(),
+	adb = get_adb_path(),
+}
 
 return M
