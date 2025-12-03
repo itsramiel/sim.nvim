@@ -16,7 +16,7 @@ local function boot_android_virtual_device(avd_name)
     cvim.system({ executables.emulator, "-avd", avd_name, "-no-audio" }, { detach = true })
   end)
 
-  for i = 1, 30 do
+  for _ = 1, 30 do
     local booted_android_emulator_names = get_booted_android_emulator_names()
     local adb_name = booted_android_emulator_names[avd_name]
     if adb_name ~= nil then

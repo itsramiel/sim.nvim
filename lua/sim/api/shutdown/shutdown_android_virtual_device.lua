@@ -17,9 +17,9 @@ local function shutdown_android_virtual_device(adb_name)
     return false
   end
 
-  for i = 1, 20 do
+  for _ = 1, 240 do
     local booted_adb_ids = get_android_virtual_device_adb_ids()
-    if booted_adb_ids[adb_name] then
+    if booted_adb_ids ~= nil and booted_adb_ids[adb_name] then
       coop_utils.sleep(250)
     else
       return true

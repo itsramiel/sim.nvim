@@ -4,26 +4,26 @@ local executables = require("sim.shared.executables")
 local cvim = require("coop.vim")
 
 ---@async
----@return table<string, boolean>
+---@return table<string, boolean>?
 local function get_android_virtual_device_adb_ids()
-  ---@type table<string, boolean>
-  local adb_ids = {}
-
   if executables.adb == nil then
-    return adb_ids
+    return nil
   end
 
   local out = cvim.system({ executables.adb, "devices" })
 
   if out.code ~= 0 then
-    return adb_ids
+    return nil
   end
 
   local output = out.stdout
 
   if output == nil or #output == 0 then
-    return adb_ids
+    return nil
   end
+
+  ---@type table<string, boolean>
+  local adb_ids = {}
 
   for line in string_lib.lines(output) do
     local adb_name = string.match(line, "^emulator%-%d+")
