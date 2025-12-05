@@ -2,10 +2,12 @@ local cvim = require("coop.vim")
 
 local string_lib = require("sim.shared.string")
 local executables = require("sim.shared.executables")
+local clipboard = require("sim.shared.clipboard")
 
 local get_booted_android_emulator_names = require("sim.shared.android").get_booted_android_emulator_names
 local boot_android_virtual_device = require("sim.api.boot.boot_android_virtual_device")
 local shutdown_android_virtual_device = require("sim.api.shutdown.shutdown_android_virtual_device")
+local paste_to_android_virtual_device = require("sim.api.paste.paste_to_android_virtual_device")
 
 ---@class sim.api.models.android_virtual_device
 ---@field name string
@@ -34,11 +36,46 @@ function android_virtual_device:isBooted()
   return self.adb_name ~= nil
 end
 
-function android_virtual_device:boot()
-  local adb_id = boot_android_virtual_device(self.name)
+---@param opts sim.api.boot_android_virtual_device.opts?
+---@return boolean
+function android_virtual_device:boot(opts)
+  local adb_id = boot_android_virtual_device(self.name, opts)
   self.adb_name = adb_id
 
   return adb_id ~= nil
+end
+
+function android_virtual_device:copy_name()
+  local name = self.name
+  clipboard.copy_to_clipboard(name)
+
+  return name
+end
+
+function android_virtual_device:copy_adb_id()
+  local adb_id = self.adb_name
+  if adb_id == nil then
+    return
+  end
+
+  clipboard.copy_to_clipboard(adb_id)
+
+  return adb_id
+end
+
+---Copies machine clipboard to device
+---@return string?
+function android_virtual_device:paste_machine_clipboard()
+  local adb_id = self.adb_name
+  if adb_id == nil then
+    return nil
+  end
+
+  local clipboard_content = vim.fn.getreg("+")
+
+  local success = paste_to_android_virtual_device(adb_id, clipboard_content)
+
+  return success and clipboard_content or nil
 end
 
 ---@return boolean

@@ -2,6 +2,7 @@ local cvim = require("coop.vim")
 
 local json = require("sim.shared.json")
 local executables = require("sim.shared.executables")
+local clipboard = require("sim.shared.clipboard")
 
 local boot_ios_virtual_device = require("sim.api.boot.boot_ios_virtual_device")
 local shutdown_ios_virtual_device = require("sim.api.shutdown.shutdown_ios_virtual_device")
@@ -48,13 +49,26 @@ function ios_virtual_device:boot()
   end
 end
 
----
 ---@async
 function ios_virtual_device:shutdown()
   local success = shutdown_ios_virtual_device(self.udid)
   if success then
     self.state = "Shutdown"
   end
+end
+
+function ios_virtual_device:copy_name()
+  local name = self.name
+  clipboard.copy_to_clipboard(name)
+
+  return name
+end
+
+function ios_virtual_device:copy_udid()
+  local udid = self.udid
+  clipboard.copy_to_clipboard(udid)
+
+  return udid
 end
 
 ---@return sim.api.models.ios_virtual_device[]
