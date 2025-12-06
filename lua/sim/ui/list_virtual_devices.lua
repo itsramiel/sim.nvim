@@ -5,6 +5,7 @@ local cvim_ui = require("coop.ui")
 
 local sim_api = require("sim.api")
 local notify = require("sim.shared.notify")
+local table_lib = require("sim.shared.table_lib")
 
 ---@alias sim.ui.list_action<T>  { label: string, fn: (fun(item: T): nil) }
 
@@ -86,9 +87,9 @@ function M.list_android_virtual_devices()
       }
 
       if is_booted then
-        return table.move(booted_actions, 1, #booted_actions, #common_actions + 1, common_actions)
+        return table_lib.merge(common_actions, booted_actions)
       else
-        return table.move(not_booted_actions, 1, #not_booted_actions, #common_actions + 1, common_actions)
+        return table_lib.merge(common_actions, not_booted_actions)
       end
     end
 
@@ -172,9 +173,9 @@ function M.list_ios_virtual_devices()
       }
 
       if is_booted then
-        return table.move(booted_actions, 1, #booted_actions, #common_actions + 1, common_actions)
+        return table_lib.merge(common_actions, booted_actions)
       else
-        return table.move(not_booted_actions, 1, #not_booted_actions, #common_actions + 1, common_actions)
+        return table_lib.merge(common_actions, not_booted_actions)
       end
     end
 

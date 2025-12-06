@@ -1,7 +1,9 @@
 local coop = require("coop")
 local cvim = require("coop.vim")
 local coop_utils = require("coop.uv-utils")
+
 local executables = require("sim.shared.executables")
+local table_lib = require("sim.shared.table_lib")
 local get_booted_android_emulator_names = require("sim.shared.android").get_booted_android_emulator_names
 
 ---@alias sim.api.boot_android_virtual_device.opts {cold:boolean?, no_audio: boolean?}
@@ -28,7 +30,7 @@ local function boot_android_virtual_device(avd_name, opts)
     table.insert(flags, "-no-audio")
   end
 
-  local command = table.move(flags, 1, #flags, #boot_command + 1, boot_command)
+  local command = table_lib.merge(boot_command, flags)
 
   coop.spawn(function()
     cvim.system(command, { detach = true })
