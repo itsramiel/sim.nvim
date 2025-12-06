@@ -1,6 +1,8 @@
 # 📱 sim.nvim
 A neovim plugin to interact with iOS and Android virtual devices and soon physical devices.
 
+❗Macos only
+
 ## Features
 
 ### 🤖 Android Virtual Devices
@@ -111,3 +113,6 @@ The plugin utilizes xcode and android studio command line tools to interact with
 ### Android
 - emulator
 - adb
+
+## Acknowledgement
+This plugin is inspired by the macos menu bar app [Minisim](https://github.com/okwasniewski/MiniSim)
