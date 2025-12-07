@@ -7,7 +7,7 @@ A neovim plugin to interact with iOS and Android virtual devices and soon physic
 
 ### 🤖 Android Virtual Devices
 - Boot with options of: cold boot, no audio
-- Shutdown individual or all virtua devices
+- Shutdown individual or all virtual devices
 - Copy name and adb id
 - Paste machine clipboard to virtual device
 
