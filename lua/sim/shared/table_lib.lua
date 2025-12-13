@@ -1,14 +1,14 @@
 local M = {}
 
----@param ... table[]
+---@param ... any[]
 function M.merge(...)
-  local merged = {}
+	local merged = {}
 
-  for _, tbl in ipairs({ ... }) do
-    table.move(tbl, 1, #tbl, #merged + 1, merged)
-  end
+	for _, tbl in ipairs({ ... }) do
+		table.move(tbl, 1, #tbl, #merged + 1, merged)
+	end
 
-  return merged
+	return merged
 end
 
 return M
