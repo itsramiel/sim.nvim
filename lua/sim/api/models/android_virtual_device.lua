@@ -100,7 +100,7 @@ function android_virtual_device.get()
     return devices
   end
 
-  local out = cvim.system({ executables.emulator, "-list-avds" })
+  local out = cvim.system({ executables.emulator, "-list-avds" }, { detach = true })
 
   if out.code ~= 0 then
     return devices

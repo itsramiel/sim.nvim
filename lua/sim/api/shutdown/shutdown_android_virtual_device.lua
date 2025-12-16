@@ -7,26 +7,26 @@ local get_android_virtual_device_adb_ids = require("sim.shared.android").get_and
 ---@param adb_name string
 ---@return boolean
 local function shutdown_android_virtual_device(adb_name)
-  if executables.adb == nil then
-    return false
-  end
+	if executables.adb == nil then
+		return false
+	end
 
-  local out = cvim.system({ executables.adb, "-s", adb_name, "emu", "kill" }, nil)
+	local out = cvim.system({ executables.adb, "-s", adb_name, "emu", "kill" }, { detach = true })
 
-  if out.code ~= 0 then
-    return false
-  end
+	if out.code ~= 0 then
+		return false
+	end
 
-  for _ = 1, 240 do
-    local booted_adb_ids = get_android_virtual_device_adb_ids()
-    if booted_adb_ids ~= nil and booted_adb_ids[adb_name] then
-      coop_utils.sleep(250)
-    else
-      return true
-    end
-  end
+	for _ = 1, 240 do
+		local booted_adb_ids = get_android_virtual_device_adb_ids()
+		if booted_adb_ids ~= nil and booted_adb_ids[adb_name] then
+			coop_utils.sleep(250)
+		else
+			return true
+		end
+	end
 
-  return false
+	return false
 end
 
 return shutdown_android_virtual_device

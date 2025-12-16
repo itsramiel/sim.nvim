@@ -6,33 +6,33 @@ local cvim = require("coop.vim")
 ---@async
 ---@return table<string, boolean>?
 local function get_android_virtual_device_adb_ids()
-  if executables.adb == nil then
-    return nil
-  end
+	if executables.adb == nil then
+		return nil
+	end
 
-  local out = cvim.system({ executables.adb, "devices" })
+	local out = cvim.system({ executables.adb, "devices" }, { detach = true })
 
-  if out.code ~= 0 then
-    return nil
-  end
+	if out.code ~= 0 then
+		return nil
+	end
 
-  local output = out.stdout
+	local output = out.stdout
 
-  if output == nil or #output == 0 then
-    return nil
-  end
+	if output == nil or #output == 0 then
+		return nil
+	end
 
-  ---@type table<string, boolean>
-  local adb_ids = {}
+	---@type table<string, boolean>
+	local adb_ids = {}
 
-  for line in string_lib.lines(output) do
-    local adb_name = string.match(line, "^emulator%-%d+")
-    if type(adb_name) == "string" then
-      adb_ids[adb_name] = true
-    end
-  end
+	for line in string_lib.lines(output) do
+		local adb_name = string.match(line, "^emulator%-%d+")
+		if type(adb_name) == "string" then
+			adb_ids[adb_name] = true
+		end
+	end
 
-  return adb_ids
+	return adb_ids
 end
 
 return get_android_virtual_device_adb_ids
