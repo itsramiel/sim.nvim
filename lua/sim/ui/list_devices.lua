@@ -127,6 +127,74 @@ function M.list_android_virtual_devices()
 	end)
 end
 
+function M.list_android_physical_devices()
+	coop.spawn(function()
+		---@alias sim.ui.list_action.android_physical_device sim.ui.list_action<sim.api.models.android_physical_device>
+
+		---@return sim.ui.list_action.android_physical_device[]
+		local function get_actions()
+			---@type sim.ui.list_action.android_physical_device[]
+			local actions = {
+				{
+					label = "Copy name",
+					fn = function(device)
+						local copied_name = device:copy_name()
+						vim.notify(copied_name .. " copied to clipboard ✅")
+					end,
+				},
+				{
+					label = "Copy adb id",
+					fn = function(device)
+						local copied_adb_id = device:copy_adb_id()
+						if copied_adb_id ~= nil then
+							vim.notify(copied_adb_id .. " copied to clipboard ✅")
+						end
+					end,
+				},
+				{
+					label = "Paste machine clipboard to device",
+					fn = function(device)
+						local pasted = device:paste_machine_clipboard()
+						if pasted ~= nil then
+							vim.notify("Machine clibpoard pasted successfully")
+						end
+					end,
+				},
+			}
+
+			return actions
+		end
+
+		notify(string.format("Getting android physical devices"))
+		local devices = sim_api.models.android_physical_device.get()
+
+		if #devices == 0 then
+			notify("No android physical devices found")
+			return
+		end
+
+		local device = select(devices, function(item)
+			return item.name
+		end, "Select Android Virtual Device to perform an action on")
+
+		if device == nil then
+			return
+		end
+
+		local actions = get_actions()
+
+		local action = select(actions, function(item)
+			return item.label
+		end, "Select action")
+
+		if action == nil then
+			return
+		end
+
+		action.fn(device)
+	end)
+end
+
 function M.list_ios_virtual_devices()
 	coop.spawn(function()
 		---@alias sim.ui.list_action.ios_virtual_device sim.ui.list_action<sim.api.models.ios_virtual_device>
@@ -267,6 +335,26 @@ function M.list_ios_physical_devices()
 		end
 
 		action.fn(device)
+	end)
+end
+
+function M.list_all()
+	coop.spawn(function()
+		---@type {label: string, action: fun(): nil}[]
+		local items = {
+			{ label = "iOS virtual devices", action = M.list_ios_virtual_devices },
+			{ label = "android virtual devices", action = M.list_android_virtual_devices },
+			{ label = "iOS physical devices", action = M.list_ios_physical_devices },
+			{ label = "android physical devices", action = M.list_android_physical_devices },
+		}
+
+		local selection = select(items, function(item)
+			return item.label
+		end, "Select")
+
+		if selection then
+			selection.action()
+		end
 	end)
 end
 
