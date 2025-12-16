@@ -9,7 +9,7 @@ local function boot_ios_virtual_device(udid_or_name)
 		return false
 	end
 
-	local out = cvim.system({ "xcrun", "simctl", "boot", udid_or_name })
+	local out = cvim.system({ "xcrun", "simctl", "boot", udid_or_name }, { detach = true })
 	return out.code == 0
 end
 

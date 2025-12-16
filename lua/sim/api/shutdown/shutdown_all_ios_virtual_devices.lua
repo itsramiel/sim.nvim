@@ -9,7 +9,7 @@ local function shutdown_all_ios_virtual_devices()
 		return false
 	end
 
-	local out = cvim.system({ executables.xcrun, "simctl", "shutdown", "all" })
+	local out = cvim.system({ executables.xcrun, "simctl", "shutdown", "all" }, { detach = true })
 
 	return out.code == 0
 end

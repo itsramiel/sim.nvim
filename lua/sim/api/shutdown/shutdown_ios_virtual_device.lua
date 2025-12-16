@@ -5,13 +5,13 @@ local executables = require("sim.shared.executables")
 ---@param udid_or_name string
 ---@return boolean
 local function shutdown_ios_virtual_device(udid_or_name)
-  if executables.xcrun == nil then
-    return false
-  end
+	if executables.xcrun == nil then
+		return false
+	end
 
-  local out = cvim.system({ executables.xcrun, "simctl", "shutdown", udid_or_name })
+	local out = cvim.system({ executables.xcrun, "simctl", "shutdown", udid_or_name }, { detach = true })
 
-  return out.code == 0
+	return out.code == 0
 end
 
 return shutdown_ios_virtual_device

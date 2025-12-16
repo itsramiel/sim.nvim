@@ -73,6 +73,7 @@ function ios_virtual_device:copy_udid()
 	return udid
 end
 
+---@async
 ---@return sim.api.models.ios_virtual_device[]
 function ios_virtual_device.get()
 	local devices = {}
@@ -81,7 +82,7 @@ function ios_virtual_device.get()
 		return devices
 	end
 
-	local out = cvim.system({ executables.xcrun, "simctl", "list", "devices", "available", "-j" })
+	local out = cvim.system({ executables.xcrun, "simctl", "list", "devices", "available", "-j" }, { detach = true })
 
 	if out.code ~= 0 then
 		return devices
