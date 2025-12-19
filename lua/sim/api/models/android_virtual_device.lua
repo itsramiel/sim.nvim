@@ -7,7 +7,7 @@ local clipboard = require("sim.shared.clipboard")
 local get_booted_android_emulator_names = require("sim.shared.android").get_booted_android_emulator_names
 local boot_android_virtual_device = require("sim.api.boot.boot_android_virtual_device")
 local shutdown_android_virtual_device = require("sim.api.shutdown.shutdown_android_virtual_device")
-local paste_to_android_virtual_device = require("sim.api.paste.paste_to_android_virtual_device")
+local paste_to_android_device = require("sim.api.paste").paste_to_android_device
 
 ---@class sim.api.models.android_virtual_device
 ---@field name string
@@ -73,7 +73,7 @@ function android_virtual_device:paste_machine_clipboard()
 
   local clipboard_content = vim.fn.getreg("+")
 
-  local success = paste_to_android_virtual_device(adb_id, clipboard_content)
+  local success = paste_to_android_device(adb_id, clipboard_content)
 
   return success and clipboard_content or nil
 end
