@@ -55,10 +55,19 @@ sim_ui.shutdown.shutdown_android_virtual_device()
 sim_ui.shutdown.shutdown_all_virtual_devices()
 
 -- List Android Virtual Devices to perform an action on
-sim_ui.list_virtual_devices.list_android_virtual_devices()
+sim_ui.list_devices.list_android_virtual_devices()
 
 -- List iOS Virtual Devices to perform an action on
-sim_ui.list_virtual_devices.list_ios_virtual_devices()
+sim_ui.list_devices.list_ios_virtual_devices()
+
+-- List Android Physical Devices to perform an action on
+sim_ui.list_devices.list_android_physical_devices()
+
+-- List iOS Physical Devices to perform an action on
+sim_ui.list_devices.list_ios_physical_devices()
+
+-- Prompts to select among physical/virtual android/ios devices to list and perform an action on
+sim_ui.list_devices.list_all()
 ```
 
 ### Lower level api for custom implementations.(The convenience methods use these internally)
@@ -95,11 +104,8 @@ return {
     opts.desc = "Shuts down all virtual devices(iOS & Android)"
     keymap.set("n", "<leader>ssx", sim_ui.shutdown.shutdown_all_virtual_devices, opts)
 
-    opts.desc = "List Android Virtual Devices to perform an action on"
-    keymap.set("n", "<leader>sla", sim_ui.list_virtual_devices.list_android_virtual_devices, opts)
-
-    opts.desc = "List iOS Virtual Devices to perform an action on"
-    keymap.set("n", "<leader>sli", sim_ui.list_virtual_devices.list_ios_virtual_devices, opts)
+    opts.desc = "List devices to perform an action on"
+    keymap.set("n", "<leader>sl", sim_ui.list_devices.list_all, opts)
   end,
 }
 ```
